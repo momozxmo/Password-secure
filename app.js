@@ -61,6 +61,7 @@
     let passwords = [];
     let selectedCategory = 'social';
     let deleteTargetId = null;
+    let activeFilter = 'all';
 
     // ===== Password Generator =====
     function generatePassword(length = 16) {
@@ -154,6 +155,9 @@
 
         const query = filter.toLowerCase().trim();
         const filtered = passwords.filter(p => {
+            // Category filter
+            if (activeFilter !== 'all' && p.category !== activeFilter) return false;
+            // Text search
             if (!query) return true;
             return p.name.toLowerCase().includes(query)
                 || (CATEGORY_LABELS[p.category] || '').toLowerCase().includes(query)
@@ -168,6 +172,9 @@
         const cats = new Set(passwords.map(p => p.category));
         animateNumber(categoryCount, cats.size);
 
+        // Update filter counts
+        updateFilterCounts();
+
         // Render cards with staggered animation
         filtered.forEach((entry, index) => {
             const card = createCard(entry);
@@ -178,6 +185,29 @@
 
         // Setup intersection observer for reveal
         setupScrollReveal();
+    }
+
+    function updateFilterCounts() {
+        const allCountEl = document.getElementById('filterCountAll');
+        if (allCountEl) allCountEl.textContent = passwords.length;
+
+        // Update each filter button count
+        document.querySelectorAll('.filter-btn[data-filter]').forEach(btn => {
+            const cat = btn.dataset.filter;
+            if (cat === 'all') return;
+            let count = passwords.filter(p => p.category === cat).length;
+            let badge = btn.querySelector('.filter-count');
+            if (count > 0) {
+                if (!badge) {
+                    badge = document.createElement('span');
+                    badge.className = 'filter-count';
+                    btn.appendChild(badge);
+                }
+                badge.textContent = count;
+            } else if (badge) {
+                badge.remove();
+            }
+        });
     }
 
     // ===== Animate number counter =====
@@ -427,6 +457,24 @@
         }
         closeDeleteModal();
     });
+
+    // Filter bar (category filter)
+    const filterBar = document.getElementById('filterBar');
+    if (filterBar) {
+        filterBar.addEventListener('click', e => {
+            const btn = e.target.closest('.filter-btn');
+            if (!btn) return;
+            const filterValue = btn.dataset.filter;
+            activeFilter = filterValue;
+
+            // Update active styles
+            filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // Re-render with current search
+            render(searchInput.value);
+        });
+    }
 
     // Category buttons
     categorySelector.addEventListener('click', e => {
