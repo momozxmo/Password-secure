@@ -1,6 +1,6 @@
 # 🛡️ AEGIS Vault — Secure Password Manager
 
-**AEGIS Vault** (เดิมชื่อ SPLASH Vault) เป็นแอปพลิเคชันจัดการและจัดเก็บรหัสผ่าน (Password Manager) ที่เน้นความสวยงามระดับพรีเมียมด้วยดีไซน์แบบ **Glassmorphism**, ธีม Dark/Cyber, และมีพื้นหลัง 3D Interactive สุดล้ำที่ทำงานด้วย **Three.js** 
+**AEGIS Vault** เป็นแอปพลิเคชันจัดการและจัดเก็บรหัสผ่าน (Password Manager) ที่เน้นความสวยงามระดับพรีเมียมด้วยดีไซน์แบบ **Glassmorphism**, ธีม Dark/Cyber, และมีพื้นหลัง 3D Interactive สุดล้ำที่ทำงานด้วย **Three.js** 
 
 ข้อมูลทั้งหมดของคุณจะถูกเข้ารหัสระดับพื้นฐานและ **จัดเก็บไว้ใน LocalStorage ของเบราว์เซอร์คุณเท่านั้น** (ไม่มีการส่งข้อมูลออกไปยังเซิร์ฟเวอร์ภายนอก)
 
