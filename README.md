@@ -1,0 +1,59 @@
+# 🛡️ AEGIS Vault — Secure Password Manager
+
+**AEGIS Vault** (เดิมชื่อ SPLASH Vault) เป็นแอปพลิเคชันจัดการและจัดเก็บรหัสผ่าน (Password Manager) ที่เน้นความสวยงามระดับพรีเมียมด้วยดีไซน์แบบ **Glassmorphism**, ธีม Dark/Cyber, และมีพื้นหลัง 3D Interactive สุดล้ำที่ทำงานด้วย **Three.js** 
+
+ข้อมูลทั้งหมดของคุณจะถูกเข้ารหัสระดับพื้นฐานและ **จัดเก็บไว้ใน LocalStorage ของเบราว์เซอร์คุณเท่านั้น** (ไม่มีการส่งข้อมูลออกไปยังเซิร์ฟเวอร์ภายนอก)
+
+![AEGIS Vault Preview](https://github.com/momozxmo/Password-secure/assets/preview.png) *(สามารถอัปโหลดรูปโปรเจกต์มาใส่แทนก้อนนี้ได้)*
+
+---
+
+## ✨ ฟีเจอร์หลัก (Features)
+
+- **UI/UX ระดับพรีเมียม**: ดีไซน์กระจกฝ้า (Glassmorphism), อนิเมชันนุ่มนวล, และเอฟเฟกต์แสงเงา (Glow Effects)
+- **3D Background**: พื้นหลังสไตล์อวกาศ/ไซเบอร์สุดล้ำพร้อมอนุภาคลอยตัว สร้างจาก **Three.js** 
+- **ตัวสุ่มรหัสผ่าน (Password Generator)**: สุ่มรหัสผ่านระดับสากลที่มีความแข็งแกร่ง 16 ตัวอักษร (A-Z, a-z, 0-9 และสัญลักษณ์พิเศษ) ได้ในคลิกเดียว
+- **ตัววัดระดับความปลอดภัย (Strength Indicator)**: แถบสีบอกระดับความแข็งแกร่งของรหัสผ่านแบบ Real-time
+- **จัดหมวดหมู่รหัสผ่าน**: แยกประเภทเป็น โซเชียล, อีเมล, การเงิน, เกม, งาน, ช้อปปิ้ง และอื่นๆ พร้อมไอคอน SVG คมชัด
+- **ความปลอดภัย (Local First)**: ข้อมูลถูกเก็บไว้ในที่ปลอดภัยบนเครื่องของคุณผ่าน `localStorage` ผสมผสานกับการเข้ารหัส Base64 (Obfuscation)
+
+---
+
+## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
+
+- **HTML5 & Vanilla CSS3**: โครงสร้างและสไตล์ด้วยเพียว CSS ไม่พึ่งพา Framework (รองรับ Responsive)
+- **Vanilla JavaScript (ES6)**: จัดการลอจิกแอปพลิเคชันทั้งหมดแบบเบาและเร็ว
+- **Three.js (ES Module)**: สร้างและเรนเดอร์ภาพกราฟิก 3D บน Canvas พื้นหลัง
+- **Google Fonts**: `Space Grotesk` (สำหรับหัวข้อ) และ `JetBrains Mono` (สำหรับตัวอักษรและโค้ด)
+
+---
+
+## 🚀 วิธีการติดตั้งและรันโปรเจกต์ (How to Run)
+
+เนื่องจากโปรเจกต์นี้ใช้ **Three.js ผ่าน ES Module** การเปิดไฟล์ `index.html` ตรงๆ จะทำให้เกิดข้อจำกัดด้านความปลอดภัยของเบราว์เซอร์ (CORS / ORB) จึงจำเป็นต้องรันผ่าน Local Server ดังนี้:
+
+### สิทธิขั้นพื้นฐาน
+ต้องมี [Node.js](https://nodejs.org/) ติดตั้งอยู่ในเครื่องก่อน
+
+1. **โคลนโปรเจกต์ลงมาที่เครื่อง:**
+   ```bash
+   git clone https://github.com/momozxmo/Password-secure.git
+   cd Password-secure
+   ```
+
+2. **รัน Local Server ด้วยคำสั่ง (npx):**
+   ```bash
+   npx serve . -l 3456
+   ```
+
+3. **เปิด Browser ของคุณไปที่ URL:**
+   ```text
+   http://localhost:3456
+   ```
+
+---
+
+## 👨‍💻 ผู้พัฒนา
+พัฒนาโดย **[momozxmo](https://github.com/momozxmo)** 
+
+*(ลิขสิทธิ์ © 2026 AEGIS Vault — Secure Password Manager)*
