@@ -5,9 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AEGIS Vault — Password Manager</title>
     <meta name="description" content="Secure password manager to store and quickly copy your credentials.">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <!-- Three.js -->
     <script type="importmap">
@@ -25,134 +27,221 @@
     <!-- Noise texture overlay -->
     <div class="noise-overlay"></div>
 
-    <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <div class="logo">
-                <div class="logo-icon">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
+    <div class="dashboard-layout">
+        <!-- ===== SIDEBAR ===== -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-top">
+                <div class="sidebar-brand">
+                    <div class="brand-icon">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="brand-title">AEGIS</h2>
+                        <span class="brand-sub">Vault Local</span>
+                    </div>
                 </div>
-                <h1>AEGIS <span>Vault</span></h1>
+                <nav class="sidebar-nav">
+                    <a href="#" class="nav-item active" data-view="dashboard">
+                        <span class="material-symbols-outlined">apps</span>
+                        <span>Dashboard</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="passwords">
+                        <span class="material-symbols-outlined">key</span>
+                        <span>รหัสผ่าน</span>
+                    </a>
+                    <a href="#" class="nav-item" data-view="urls">
+                        <span class="material-symbols-outlined">link</span>
+                        <span>URL Bookmarks</span>
+                    </a>
+                </nav>
             </div>
-            <p class="subtitle">จัดเก็บรหัสผ่านของคุณอย่างปลอดภัย</p>
-        </header>
+            <div class="sidebar-bottom">
+                <button class="btn-add-sidebar" id="btnAdd">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    เพิ่มใหม่
+                </button>
+                <div class="sidebar-footer-links">
+                    <a href="#" class="nav-item-footer">
+                        <span class="material-symbols-outlined">info</span>
+                        <span>ข้อมูลจัดเก็บใน localStorage</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
 
-        <!-- Search & Add -->
-        <div class="toolbar">
-            <div class="search-box">
-                <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-                </svg>
-                <input type="text" id="searchInput" placeholder="ค้นหารหัสผ่าน..." autocomplete="off">
-            </div>
-            <button class="btn-add" id="btnAdd" title="เพิ่มรหัสผ่านใหม่">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
-                </svg>
-                <span>เพิ่มใหม่</span>
-            </button>
-        </div>
+        <!-- ===== MAIN CONTENT ===== -->
+        <main class="main-content">
+            <!-- TOP BAR -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="sidebar-toggle" id="sidebarToggle">
+                        <span class="material-symbols-outlined">menu</span>
+                    </button>
+                    <h1 class="topbar-title">AEGIS <span>Vault</span></h1>
+                    <div class="search-box">
+                        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="searchInput" placeholder="ค้นหา..." autocomplete="off">
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="topbar-avatar">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    </div>
+                </div>
+            </header>
 
-        <!-- Stats -->
-        <div class="stats-bar">
-            <div class="stat" id="statTotal">
-                <div class="stat-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
-                </div>
-                <div class="stat-content">
-                    <span class="stat-number" id="totalCount">0</span>
-                    <span class="stat-label">รหัสผ่านทั้งหมด</span>
-                </div>
-            </div>
-            <div class="stat" id="statCategory">
-                <div class="stat-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
-                    </svg>
-                </div>
-                <div class="stat-content">
-                    <span class="stat-number" id="categoryCount">0</span>
-                    <span class="stat-label">หมวดหมู่</span>
-                </div>
-            </div>
-        </div>
+            <!-- SCROLLABLE CONTENT AREA -->
+            <section class="content-area" id="contentArea">
 
-        <!-- Category Filter -->
-        <div class="filter-bar" id="filterBar">
-            <span class="filter-bar-label">กรอง:</span>
-            <button class="filter-btn active" data-filter="all">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-                ทั้งหมด
-                <span class="filter-count" id="filterCountAll">0</span>
-            </button>
-            <button class="filter-btn" data-filter="social">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                โซเชียล
-            </button>
-            <button class="filter-btn" data-filter="email">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                อีเมล
-            </button>
-            <button class="filter-btn" data-filter="finance">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                การเงิน
-            </button>
-            <button class="filter-btn" data-filter="gaming">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/></svg>
-                เกม
-            </button>
-            <button class="filter-btn" data-filter="work">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                งาน
-            </button>
-            <button class="filter-btn" data-filter="shopping">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                ช้อปปิ้ง
-            </button>
-            <button class="filter-btn" data-filter="other">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-                อื่นๆ
-            </button>
-        </div>
+                <!-- ==================== VIEW: Dashboard ==================== -->
+                <div class="view active" id="viewDashboard" data-view="dashboard">
+                    <!-- Welcome Banner -->
+                    <div class="welcome-banner">
+                        <div class="welcome-glow"></div>
+                        <div class="welcome-content">
+                            <h2 class="welcome-title">Welcome back</h2>
+                            <p class="welcome-desc">จัดเก็บรหัสผ่านและลิงก์สำคัญของคุณอย่างปลอดภัย</p>
+                            <div class="welcome-stats">
+                                <div class="welcome-stat">
+                                    <span class="welcome-stat-label">TOTAL PASSWORDS</span>
+                                    <span class="welcome-stat-value" id="totalCount">0</span>
+                                </div>
+                                <div class="welcome-stat-divider"></div>
+                                <div class="welcome-stat">
+                                    <span class="welcome-stat-label secondary">TOTAL URLS</span>
+                                    <span class="welcome-stat-value" id="urlCount">0</span>
+                                </div>
+                                <div class="welcome-stat-divider"></div>
+                                <div class="welcome-stat">
+                                    <span class="welcome-stat-label">CATEGORIES</span>
+                                    <span class="welcome-stat-value" id="categoryCount">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-        <!-- Password List -->
-        <div class="password-list" id="passwordList">
-            <!-- Empty state -->
-            <div class="empty-state" id="emptyState">
-                <div class="empty-icon-wrapper">
-                    <div class="empty-icon-ring"></div>
-                    <div class="empty-icon-ring ring-2"></div>
-                    <svg class="empty-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                        <circle cx="12" cy="16" r="1"/>
-                    </svg>
-                </div>
-                <h3>ยังไม่มีรหัสผ่าน</h3>
-                <p>กดปุ่ม "เพิ่มใหม่" เพื่อเริ่มบันทึกรหัสผ่านของคุณ</p>
-            </div>
-        </div>
+                    <!-- Quick Access: Passwords -->
+                    <div class="section-header">
+                        <div>
+                            <h3 class="section-title">Quick Access — รหัสผ่าน</h3>
+                            <p class="section-desc">รายการล่าสุดที่บันทึกไว้</p>
+                        </div>
+                    </div>
+                    <div class="quick-grid" id="dashPasswordGrid">
+                        <!-- Rendered by JS -->
+                    </div>
 
-        <!-- Footer -->
-        <footer class="app-footer">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-                    </svg>
-                    <span>AEGIS Vault</span>
+                    <!-- Quick Access: URLs -->
+                    <div class="section-header" style="margin-top: 32px;">
+                        <div>
+                            <h3 class="section-title">Quick Access — URL Bookmarks</h3>
+                            <p class="section-desc">ลิงก์ที่บันทึกไว้</p>
+                        </div>
+                    </div>
+                    <div class="quick-grid" id="dashUrlGrid">
+                        <!-- Rendered by JS -->
+                    </div>
                 </div>
-                <p class="footer-note">ข้อมูลทั้งหมดจัดเก็บในเครื่องของคุณเท่านั้น (localStorage)</p>
-                <p class="footer-copy">&copy; 2026 AEGIS Vault — Secure Password Manager</p>
-            </div>
-        </footer>
+
+                <!-- ==================== VIEW: Passwords ==================== -->
+                <div class="view" id="viewPasswords" data-view="passwords">
+                    <!-- Filter Bar -->
+                    <div class="section-header">
+                        <div>
+                            <h3 class="section-title">รหัสผ่านทั้งหมด</h3>
+                            <p class="section-desc">จัดเก็บและค้นหารหัสผ่านของคุณ</p>
+                        </div>
+                    </div>
+                    <div class="filter-bar" id="filterBar">
+                        <span class="filter-bar-label">กรอง:</span>
+                        <button class="filter-btn active" data-filter="all">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            ทั้งหมด
+                            <span class="filter-count" id="filterCountAll">0</span>
+                        </button>
+                        <button class="filter-btn" data-filter="playid">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            PlayID
+                        </button>
+                        <button class="filter-btn" data-filter="team">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Team
+                        </button>
+                        <button class="filter-btn" data-filter="other">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            อื่นๆ
+                        </button>
+                    </div>
+                    <div class="password-list" id="passwordList">
+                        <div class="empty-state" id="emptyState">
+                            <div class="empty-icon-wrapper">
+                                <div class="empty-icon-ring"></div>
+                                <div class="empty-icon-ring ring-2"></div>
+                                <svg class="empty-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/><circle cx="12" cy="16" r="1"/></svg>
+                            </div>
+                            <h3>ยังไม่มีรหัสผ่าน</h3>
+                            <p>กดปุ่ม "เพิ่มใหม่" เพื่อเริ่มบันทึกรหัสผ่านของคุณ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== VIEW: URL Bookmarks ==================== -->
+                <div class="view" id="viewUrls" data-view="urls">
+                    <div class="section-header">
+                        <div>
+                            <h3 class="section-title">URL Bookmarks ทั้งหมด</h3>
+                            <p class="section-desc">จัดเก็บและค้นหาลิงก์ของคุณ</p>
+                        </div>
+                    </div>
+                    <div class="filter-bar" id="urlFilterBar">
+                        <span class="filter-bar-label">กรอง:</span>
+                        <button class="filter-btn active" data-filter="all">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                            ทั้งหมด
+                            <span class="filter-count" id="urlFilterCountAll">0</span>
+                        </button>
+                        <button class="filter-btn" data-filter="livezone">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                            LiveZone
+                        </button>
+                        <button class="filter-btn" data-filter="testzone">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            TestZone
+                        </button>
+                        <button class="filter-btn" data-filter="team">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Team
+                        </button>
+                        <button class="filter-btn" data-filter="other">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            อื่นๆ
+                        </button>
+                    </div>
+                    <div class="password-list url-list" id="urlList">
+                        <div class="empty-state" id="urlEmptyState">
+                            <div class="empty-icon-wrapper">
+                                <div class="empty-icon-ring"></div>
+                                <div class="empty-icon-ring ring-2"></div>
+                                <svg class="empty-icon-svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                            </div>
+                            <h3>ยังไม่มี URL Bookmark</h3>
+                            <p>กดปุ่ม "เพิ่มใหม่" เพื่อเริ่มบันทึกลิงก์ของคุณ</p>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+        </main>
+    </div>
+
+    <!-- Floating Lock Button -->
+    <div class="floating-lock">
+        <button class="btn-float-lock" title="Lock Vault">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+        </button>
     </div>
 
     <!-- Modal: Add/Edit Password -->
@@ -161,9 +250,7 @@
             <div class="modal-header">
                 <h2 id="modalTitle">เพิ่มรหัสผ่านใหม่</h2>
                 <button class="btn-close" id="btnCloseModal" title="ปิด">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-                    </svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
                 </button>
             </div>
             <form id="passwordForm">
@@ -174,29 +261,13 @@
                 <div class="form-group">
                     <label for="entryCategory">หมวดหมู่</label>
                     <div class="category-selector" id="categorySelector">
-                        <button type="button" class="cat-btn active" data-cat="social">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-                            โซเชียล
+                        <button type="button" class="cat-btn active" data-cat="playid">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                            PlayID
                         </button>
-                        <button type="button" class="cat-btn" data-cat="email">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                            อีเมล
-                        </button>
-                        <button type="button" class="cat-btn" data-cat="finance">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-                            การเงิน
-                        </button>
-                        <button type="button" class="cat-btn" data-cat="gaming">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><circle cx="15" cy="11" r="0.5" fill="currentColor"/><circle cx="18" cy="13" r="0.5" fill="currentColor"/></svg>
-                            เกม
-                        </button>
-                        <button type="button" class="cat-btn" data-cat="work">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
-                            งาน
-                        </button>
-                        <button type="button" class="cat-btn" data-cat="shopping">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
-                            ช้อปปิ้ง
+                        <button type="button" class="cat-btn" data-cat="team">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Team
                         </button>
                         <button type="button" class="cat-btn" data-cat="other">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
@@ -213,28 +284,16 @@
                     <div class="password-input-wrapper">
                         <input type="password" id="entryPassword" placeholder="รหัสผ่าน" required>
                         <button type="button" class="btn-toggle-pw" id="btnTogglePw" title="แสดง/ซ่อนรหัสผ่าน">
-                            <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-                                <circle cx="12" cy="12" r="3"/>
-                            </svg>
-                            <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
-                                <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/>
-                                <line x1="1" y1="1" x2="23" y2="23"/>
-                            </svg>
+                            <svg class="eye-open" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg class="eye-closed" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
                         </button>
                     </div>
-                    <!-- Password strength bar -->
                     <div class="password-strength" id="passwordStrength">
-                        <div class="strength-bar">
-                            <div class="strength-fill" id="strengthFill"></div>
-                        </div>
+                        <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
                         <span class="strength-text" id="strengthText"></span>
                     </div>
-                    <!-- Password Generator -->
                     <button type="button" class="btn-generate-pw" id="btnGeneratePw">
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>
-                        </svg>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></svg>
                         <span>สุ่มรหัสผ่าน</span>
                         <span class="generate-badge">16 ตัวอักษร</span>
                     </button>
@@ -247,11 +306,7 @@
                 <div class="form-actions">
                     <button type="button" class="btn-cancel" id="btnCancel">ยกเลิก</button>
                     <button type="submit" class="btn-save">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                            <polyline points="17 21 17 13 7 13 7 21"/>
-                            <polyline points="7 3 7 8 15 8"/>
-                        </svg>
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
                         บันทึก
                     </button>
                 </div>
@@ -263,12 +318,7 @@
     <div class="modal-overlay" id="deleteModalOverlay">
         <div class="modal modal-delete">
             <div class="delete-icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="3 6 5 6 21 6"/>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
-                    <line x1="10" y1="11" x2="10" y2="17"/>
-                    <line x1="14" y1="11" x2="14" y2="17"/>
-                </svg>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
             </div>
             <h2>ลบรหัสผ่านนี้?</h2>
             <p id="deleteEntryName">คุณต้องการลบรายการนี้ใช่หรือไม่?</p>
@@ -279,12 +329,67 @@
         </div>
     </div>
 
+    <!-- Modal: Add/Edit URL -->
+    <div class="modal-overlay" id="urlModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="urlModalTitle">เพิ่ม URL ใหม่</h2>
+                <button class="btn-close" id="btnCloseUrlModal" title="ปิด">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <form id="urlForm">
+                <div class="form-group">
+                    <label for="urlEntryName">ชื่อเว็บไซต์</label>
+                    <input type="text" id="urlEntryName" placeholder="เช่น GitHub, Google Drive, Notion..." required>
+                </div>
+                <div class="form-group">
+                    <label for="urlEntryUrl">URL</label>
+                    <div class="url-input-wrapper">
+                        <svg class="url-input-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                        <input type="url" id="urlEntryUrl" placeholder="https://example.com" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="urlEntryCategory">หมวดหมู่</label>
+                    <div class="category-selector" id="urlCategorySelector">
+                        <button type="button" class="cat-btn active" data-cat="livezone">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+                            LiveZone
+                        </button>
+                        <button type="button" class="cat-btn" data-cat="testzone">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+                            TestZone
+                        </button>
+                        <button type="button" class="cat-btn" data-cat="team">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            Team
+                        </button>
+                        <button type="button" class="cat-btn" data-cat="other">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+                            อื่นๆ
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="urlEntryNote">หมายเหตุ <span class="optional">(ไม่จำเป็น)</span></label>
+                    <textarea id="urlEntryNote" rows="2" placeholder="บันทึกเพิ่มเติม..."></textarea>
+                </div>
+                <input type="hidden" id="urlEntryId" value="">
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="btnCancelUrl">ยกเลิก</button>
+                    <button type="submit" class="btn-save">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                        บันทึก
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div class="toast" id="toast">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
-            <polyline points="22 4 12 14.01 9 11.01"/>
-        </svg>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
         <span id="toastMessage">คัดลอกสำเร็จ!</span>
     </div>
 
