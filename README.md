@@ -58,7 +58,3 @@ Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
 
 ---
 
-## 👨‍💻 Developer
-Developed by **[momozxmo](https://github.com/momozxmo)**.
-
-*(Copyright © 2026 AEGIS Vault — Secure Password Manager)*
