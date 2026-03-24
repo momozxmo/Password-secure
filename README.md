@@ -1,57 +1,64 @@
 # 🛡️ AEGIS Vault — Secure Password Manager
 
-**AEGIS Vault** เป็นแอปพลิเคชันจัดการและจัดเก็บรหัสผ่าน (Password Manager) ที่เน้นความสวยงามระดับพรีเมียมด้วยดีไซน์แบบ **Glassmorphism**, ธีม Dark/Cyber, และมีพื้นหลัง 3D Interactive สุดล้ำที่ทำงานด้วย **Three.js** 
+*Read this in other languages: [ภาษาไทย (Thai)](README_th.md)*
 
-ข้อมูลทั้งหมดของคุณจะถูกเข้ารหัสระดับพื้นฐานและ **จัดเก็บไว้ใน LocalStorage ของเบราว์เซอร์คุณเท่านั้น** (ไม่มีการส่งข้อมูลออกไปยังเซิร์ฟเวอร์ภายนอก)
+**AEGIS Vault** is a secure password management application focused on a premium aesthetic with a **Glassmorphism** design, a Dark/Cyber theme, and an interactive 3D particle background powered by **Three.js**.
 
-![AEGIS Vault Preview](https://github.com/momozxmo/Password-secure/assets/preview.png) *(สามารถอัปโหลดรูปโปรเจกต์มาใส่แทนก้อนนี้ได้)*
+All of your data is obfuscated and **stored exclusively in your browser's LocalStorage** (no data is transmitted to external servers).
 
----
-
-## ✨ ฟีเจอร์หลัก (Features)
-
-- **UI/UX ระดับพรีเมียม**: ดีไซน์กระจกฝ้า (Glassmorphism), อนิเมชันนุ่มนวล, และเอฟเฟกต์แสงเงา (Glow Effects) พร้อมโครงสร้าง **Dashboard Layout**
-- **Dashboard & Quick Access**: หน้าสรุปข้อมูลพร้อมการ์ด Quick Access สำหรับเข้าถึงรหัสผ่านและ URL ล่าสุดได้อย่างรวดเร็ว รวมถึงระบบค้นหาและกรองแบบ Real-time
-- **Sidebar Navigation**: เมนูนำทางด้านข้างที่เรียบง่ายและใช้งานสะดวก
-- **จัดการ URL Bookmarks**: นอกจากการเก็บรหัสผ่านแล้ว ยังสามารถบันทึกลิงก์ (URL Bookmarks) พร้อมหมวดหมู่ (LiveZone, TestZone, Team ฯลฯ) แยกออกจากกันได้อย่างชัดเจน
-- **3D Background**: พื้นหลังสไตล์อวกาศ/ไซเบอร์สุดล้ำพร้อมอนุภาคลอยตัว สร้างจาก **Three.js** 
-- **ตัวสุ่มรหัสผ่าน (Password Generator)**: สุ่มรหัสผ่านระดับสากลที่มีความแข็งแกร่ง 16 ตัวอักษร (A-Z, a-z, 0-9 และสัญลักษณ์พิเศษ) ได้ในคลิกเดียว
-- **ตัววัดระดับความปลอดภัย (Strength Indicator)**: แถบสีบอกระดับความแข็งแกร่งของรหัสผ่านแบบ Real-time
-- **จัดหมวดหมู่รหัสผ่าน**: แยกประเภทเป็น โซเชียล, อีเมล, การเงิน, เกม, งาน, ช้อปปิ้ง และอื่นๆ พร้อมไอคอน SVG คมชัด
-- **ความปลอดภัย (Local First)**: ข้อมูลถูกเก็บไว้ในที่ปลอดภัยบนเครื่องของคุณผ่าน `localStorage` ผสมผสานกับการเข้ารหัส Base64 (Obfuscation)
+![AEGIS Vault Preview](https://github.com/momozxmo/Password-secure/assets/preview.png) *(You can replace this image with an actual screenshot of the project)*
 
 ---
 
-## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
+## ✨ Features
 
-- **HTML5 & Vanilla CSS3**: โครงสร้างและสไตล์ด้วยเพียว CSS ไม่พึ่งพา Framework (รองรับ Responsive)
-- **Vanilla JavaScript (ES6)**: จัดการลอจิกแอปพลิเคชันทั้งหมดแบบเบาและเร็ว
-- **Three.js (ES Module)**: สร้างและเรนเดอร์ภาพกราฟิก 3D บน Canvas พื้นหลัง
-- **Google Fonts**: `Space Grotesk` (สำหรับหัวข้อ) และ `JetBrains Mono` (สำหรับตัวอักษรและโค้ด)
+- **Premium UI/UX**: Glassmorphism design, smooth animations, and glow effects built into a modernized **Dashboard Layout**.
+- **Dashboard & Quick Access**: Summary page featuring quick access cards for passwords and recent URLs, equipped with real-time search and filtering.
+- **Sidebar Navigation**: Simple, intuitive, and highly responsive sidebar menu.
+- **URL Bookmarks Manager**: In addition to passwords, you can save and categorize web links (LiveZone, TestZone, Team, etc.) effortlessly.
+- **3D Background**: Futuristic space/cyber background with floating interactive particles rendered via **Three.js**.
+- **Password Generator**: One-click generation of strong, international-standard 16-character passwords (including A-Z, a-z, 0-9, and special symbols).
+- **Strength Indicator**: Real-time visual feedback representing password strength levels.
+- **Categorization**: Systematically separate your passwords into custom categories such as PlayID, Team, and others.
+- **Security (Local First)**: Data is safely stored strictly on your device via `localStorage`, integrated with Base64 encoding (Obfuscation).
 
 ---
 
-## 🚀 วิธีการติดตั้งและรันโปรเจกต์ (How to Run)
+## 🛠️ Tech Stack
 
-เนื่องจากโปรเจกต์นี้ใช้ **Three.js ผ่าน ES Module** การเปิดไฟล์ `index.html` ตรงๆ จะทำให้เกิดข้อจำกัดด้านความปลอดภัยของเบราว์เซอร์ (CORS / ORB) จึงจำเป็นต้องรันผ่าน Local Server ดังนี้:
+- **HTML5 & Vanilla CSS3**: Pure CSS structure and styling completely without the reliance on large frameworks (fully responsive on all devices).
+- **Vanilla JavaScript (ES6)**: Lightweight and fast core application logic.
+- **Three.js (ES Module)**: Powers the rich 3D graphics on the background canvas element.
+- **Google Fonts**: `Space Grotesk` (for headings) and `JetBrains Mono` (for content and code blocks).
 
-### สิทธิขั้นพื้นฐาน
-ต้องมี [Node.js](https://nodejs.org/) ติดตั้งอยู่ในเครื่องก่อน
+---
 
-1. **โคลนโปรเจกต์ลงมาที่เครื่อง:**
+## 🚀 How to Run
+
+Because this project utilizes **Three.js via ES Modules**, opening `index.html` directly from the file system will result in restrictive browser security errors (CORS / ORB). Therefore, running it via a Local Server is necessary:
+
+### Prerequisites
+Make sure you have [Node.js](https://nodejs.org/) installed on your machine.
+
+1. **Clone the project:**
    ```bash
    git clone https://github.com/momozxmo/Password-secure.git
    cd Password-secure
    ```
 
-2. **รัน Local Server ด้วยคำสั่ง (npx):**
+2. **Run the local server via npx:**
    ```bash
    npx serve . -l 3456
    ```
 
-3. **เปิด Browser ของคุณไปที่ URL:**
+3. **Open your browser and navigate to:**
    ```text
    http://localhost:3456
    ```
 
 ---
+
+## 👨‍💻 Developer
+Developed by **[momozxmo](https://github.com/momozxmo)**.
+
+*(Copyright © 2026 AEGIS Vault — Secure Password Manager)*
