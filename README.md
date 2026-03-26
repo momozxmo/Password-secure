@@ -16,10 +16,8 @@ All of your data is obfuscated and **stored exclusively in your browser's LocalS
 - **Dashboard & Quick Access**: Summary page featuring quick access cards for passwords and recent URLs, equipped with real-time search and filtering.
 - **Sidebar Navigation**: Simple, intuitive, and highly responsive sidebar menu.
 - **URL Bookmarks Manager**: In addition to passwords, you can save and categorize web links (LiveZone, TestZone, Team, etc.) effortlessly.
-- **3D Background**: Futuristic space/cyber background with floating interactive particles rendered via **Three.js**.
-- **Password Generator**: One-click generation of strong, international-standard 16-character passwords (including A-Z, a-z, 0-9, and special symbols).
-- **Strength Indicator**: Real-time visual feedback representing password strength levels.
 - **Custom Categories**: Systematically separate your passwords into custom categories. Create, edit, and delete your own categories with a personalized icon and color picker.
+- **Vault Health (Password Audit)**: Evaluate your password security with a dynamic Secure Score ring. Identify Weak, Reused, and Old (>90 days) passwords via a detailed Audit Log with quick-action buttons.
 - **Import / Export Backup**: Download a `.json` backup of your passwords, URLs, and custom categories, and easily import them back across devices (with merge or replace modes).
 - **Security (Local First)**: Data is safely stored strictly on your device via `localStorage`.
 

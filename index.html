@@ -57,6 +57,10 @@
                         <span>URL Bookmarks</span>
                     </a>
                     <div class="nav-divider"></div>
+                    <a href="#" class="nav-item" data-view="health">
+                        <span class="material-symbols-outlined">shield</span>
+                        <span>Vault Health</span>
+                    </a>
                     <a href="#" class="nav-item" id="btnBackup">
                         <span class="material-symbols-outlined">cloud_sync</span>
                         <span>สำรอง/กู้คืน</span>
@@ -234,6 +238,99 @@
                             </div>
                             <h3>ยังไม่มี URL Bookmark</h3>
                             <p>กดปุ่ม "เพิ่มใหม่" เพื่อเริ่มบันทึกลิงก์ของคุณ</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ==================== VIEW: Vault Health ==================== -->
+                <div class="view" id="viewHealth" data-view="health">
+                    <div class="view-header">
+                        <h2>Vault Health</h2>
+                        <p>ตรวจสอบความปลอดภัยของรหัสผ่านทั้งหมดในระบบ</p>
+                    </div>
+
+                    <!-- Security Score Hero -->
+                    <div class="health-hero">
+                        <div class="score-ring-wrapper">
+                            <svg class="score-ring" viewBox="0 0 200 200">
+                                <circle class="score-ring-bg" cx="100" cy="100" r="85" fill="none" stroke-width="12"/>
+                                <circle class="score-ring-fill" id="scoreRingFill" cx="100" cy="100" r="85" fill="none" stroke-width="12"
+                                    stroke-dasharray="534" stroke-dashoffset="534" stroke-linecap="round"
+                                    transform="rotate(-90 100 100)"/>
+                            </svg>
+                            <div class="score-value">
+                                <span class="score-number" id="scoreNumber">0</span>
+                                <span class="score-percent">%</span>
+                            </div>
+                            <div class="score-label">SECURE SCORE</div>
+                        </div>
+                        <div class="score-summary">
+                            <span class="score-status-label">SECURITY STATUS</span>
+                            <h3 class="score-headline" id="scoreHeadline">กำลังวิเคราะห์...</h3>
+                            <p class="score-description" id="scoreDescription"></p>
+                            <button class="btn-save" id="btnExportReport">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                                Export Report
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Issue Stat Cards -->
+                    <div class="health-cards">
+                        <div class="health-card risk" id="cardWeak">
+                            <div class="health-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+                            </div>
+                            <span class="health-card-badge badge-risk">AT RISK</span>
+                            <div class="health-card-value" id="weakCount">0</div>
+                            <div class="health-card-label">WEAK PASSWORDS</div>
+                            <p class="health-card-desc">รหัสผ่านที่สั้นเกินไปหรือไม่มีความซับซ้อนเพียงพอ</p>
+                        </div>
+                        <div class="health-card warning" id="cardReused">
+                            <div class="health-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M17 12h.01"/><path d="M7 12h.01"/></svg>
+                            </div>
+                            <span class="health-card-badge badge-warning">WARNING</span>
+                            <div class="health-card-value" id="reusedCount">0</div>
+                            <div class="health-card-label">REUSED PASSWORDS</div>
+                            <p class="health-card-desc">รหัสผ่านที่ใช้ซ้ำกันหลายบัญชีเพิ่มความเสี่ยงลูกโซ่</p>
+                        </div>
+                        <div class="health-card critical" id="cardOld">
+                            <div class="health-card-icon">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <span class="health-card-badge badge-critical">OLD</span>
+                            <div class="health-card-value" id="oldCount">0</div>
+                            <div class="health-card-label">OLD PASSWORDS</div>
+                            <p class="health-card-desc">รหัสผ่านที่ไม่ได้เปลี่ยนนานกว่า 90 วัน ควรอัปเดต</p>
+                        </div>
+                    </div>
+
+                    <!-- Detailed Audit Log -->
+                    <div class="audit-section">
+                        <div class="audit-header">
+                            <h3>Detailed Audit Log</h3>
+                            <div class="audit-filter">
+                                <span>FILTER:</span>
+                                <select id="auditFilter">
+                                    <option value="all">ALL ISSUES</option>
+                                    <option value="weak">WEAK</option>
+                                    <option value="reused">REUSED</option>
+                                    <option value="old">OLD</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="audit-table-head">
+                            <span>ACCOUNT</span>
+                            <span>SECURITY ISSUE</span>
+                            <span>ACTION</span>
+                        </div>
+                        <div class="audit-list" id="auditList">
+                            <!-- Rendered by JS -->
+                        </div>
+                        <div class="audit-empty" id="auditEmpty" style="display: none;">
+                            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/><path d="M9 12l2 2 4-4"/></svg>
+                            <p>ไม่พบปัญหาด้านความปลอดภัย — ยอดเยี่ยม! 🎉</p>
                         </div>
                     </div>
                 </div>

@@ -690,6 +690,9 @@
         } else if (viewName === 'urls') {
             searchInput.placeholder = 'ค้นหา URL...';
             renderUrls(searchInput.value);
+        } else if (viewName === 'health') {
+            searchInput.placeholder = 'ค้นหา...';
+            renderHealth();
         } else {
             searchInput.placeholder = 'ค้นหา...';
             renderDashboard(searchInput.value);
@@ -1364,6 +1367,205 @@
             renderAddCategoryForm();
         }
     });
+
+    // ===== VAULT HEALTH =====
+    function renderHealth() {
+        const issues = [];
+        const passwordMap = {};
+
+        // Analyze each password
+        passwords.forEach(entry => {
+            const decoded = decode(entry.password);
+            const strength = checkPasswordStrength(decoded);
+
+            // Weak password check
+            if (strength.score <= 2) {
+                issues.push({
+                    id: entry.id,
+                    name: entry.name,
+                    username: decode(entry.username),
+                    type: 'weak',
+                    label: `WEAK (${decoded.length} CHARACTERS)`,
+                    action: 'STRENGTHEN',
+                    category: entry.category
+                });
+            }
+
+            // Reused password check
+            if (!passwordMap[decoded]) passwordMap[decoded] = [];
+            passwordMap[decoded].push(entry);
+
+            // Old password check (> 90 days)
+            if (entry.createdAt) {
+                const created = new Date(entry.createdAt);
+                const daysDiff = Math.floor((Date.now() - created.getTime()) / (1000 * 60 * 60 * 24));
+                if (daysDiff > 90) {
+                    issues.push({
+                        id: entry.id,
+                        name: entry.name,
+                        username: decode(entry.username),
+                        type: 'old',
+                        label: `OLD (${daysDiff} DAYS)`,
+                        action: 'REFRESH',
+                        category: entry.category
+                    });
+                }
+            }
+        });
+
+        // Add reused entries
+        Object.values(passwordMap).forEach(group => {
+            if (group.length > 1) {
+                group.forEach(entry => {
+                    issues.push({
+                        id: entry.id,
+                        name: entry.name,
+                        username: decode(entry.username),
+                        type: 'reused',
+                        label: `REUSED x${group.length} TIMES`,
+                        action: 'UPDATE',
+                        category: entry.category
+                    });
+                });
+            }
+        });
+
+        // Count by type
+        const weakCount = issues.filter(i => i.type === 'weak').length;
+        const reusedCount = issues.filter(i => i.type === 'reused').length;
+        const oldCount = issues.filter(i => i.type === 'old').length;
+        const totalIssues = weakCount + reusedCount + oldCount;
+
+        // Calculate score
+        let score = 100;
+        if (passwords.length > 0) {
+            const uniqueIssueIds = new Set(issues.map(i => i.id));
+            const affectedRatio = uniqueIssueIds.size / passwords.length;
+            score = Math.max(0, Math.round(100 - (affectedRatio * 100)));
+        }
+        if (passwords.length === 0) score = 100;
+
+        // Animate score ring
+        const ring = document.getElementById('scoreRingFill');
+        const circumference = 534;
+        const offset = circumference - (score / 100) * circumference;
+        setTimeout(() => {
+            ring.style.transition = 'stroke-dashoffset 1.2s ease-out';
+            ring.style.strokeDashoffset = offset;
+        }, 100);
+
+        // Color the ring based on score
+        if (score >= 80) ring.style.stroke = '#34d399';
+        else if (score >= 50) ring.style.stroke = '#fbbf24';
+        else ring.style.stroke = '#ff6b6b';
+
+        // Animate number
+        const scoreEl = document.getElementById('scoreNumber');
+        animateNumber(scoreEl, score);
+
+        // Update headline
+        const headline = document.getElementById('scoreHeadline');
+        const desc = document.getElementById('scoreDescription');
+        if (score >= 90) {
+            headline.innerHTML = 'ระบบของคุณ <span style="color: #34d399">ปลอดภัยมาก</span>';
+            desc.textContent = 'ยอดเยี่ยม! รหัสผ่านทั้งหมดอยู่ในสถานะที่ดีเยี่ยม';
+        } else if (score >= 70) {
+            headline.innerHTML = 'ระบบของคุณ <span style="color: #81ecff">ค่อนข้างปลอดภัย</span>';
+            desc.textContent = `พบ ${totalIssues} ปัญหาที่ควรแก้ไข การแก้ไขจะช่วยเพิ่มคะแนนได้`;
+        } else if (score >= 40) {
+            headline.innerHTML = 'ระบบของคุณ <span style="color: #fbbf24">ต้องปรับปรุง</span>';
+            desc.textContent = `พบ ${totalIssues} ปัญหาสำคัญ กรุณาอัปเดตรหัสผ่านที่มีความเสี่ยง`;
+        } else {
+            headline.innerHTML = 'ระบบของคุณ <span style="color: #ff6b6b">เสี่ยงอันตราย</span>';
+            desc.textContent = `พบ ${totalIssues} ปัญหาร้ายแรง ต้องแก้ไขโดยด่วน!`;
+        }
+
+        // Update stat cards
+        document.getElementById('weakCount').textContent = String(weakCount).padStart(2, '0');
+        document.getElementById('reusedCount').textContent = String(reusedCount).padStart(2, '0');
+        document.getElementById('oldCount').textContent = String(oldCount).padStart(2, '0');
+
+        // Render audit log
+        renderAuditLog(issues, 'all');
+
+        // Audit filter
+        const auditFilter = document.getElementById('auditFilter');
+        auditFilter.onchange = () => renderAuditLog(issues, auditFilter.value);
+
+        // Export report
+        const btnReport = document.getElementById('btnExportReport');
+        btnReport.onclick = () => {
+            const report = {
+                _meta: { app: 'AEGIS Vault Health Report', generatedAt: new Date().toISOString() },
+                score,
+                totalPasswords: passwords.length,
+                issues: { weak: weakCount, reused: reusedCount, old: oldCount, total: totalIssues },
+                details: issues.map(i => ({ account: i.name, username: i.username, issue: i.label }))
+            };
+            const blob = new Blob([JSON.stringify(report, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `aegis-vault-health-report-${new Date().toISOString().slice(0,10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('ส่งออกรายงานสำเร็จ');
+        };
+    }
+
+    function renderAuditLog(issues, filter) {
+        const list = document.getElementById('auditList');
+        const emptyEl = document.getElementById('auditEmpty');
+        const filtered = filter === 'all' ? issues : issues.filter(i => i.type === filter);
+
+        if (filtered.length === 0) {
+            list.innerHTML = '';
+            emptyEl.style.display = 'flex';
+            return;
+        }
+        emptyEl.style.display = 'none';
+
+        list.innerHTML = filtered.map(issue => {
+            const iconSvg = getCategoryIcon(issue.category);
+            const badgeClass = issue.type === 'weak' ? 'badge-risk' : issue.type === 'reused' ? 'badge-warning' : 'badge-critical';
+            const actionClass = issue.type === 'weak' ? 'audit-btn-risk' : issue.type === 'reused' ? 'audit-btn-warning' : 'audit-btn-critical';
+
+            return `
+                <div class="audit-row">
+                    <div class="audit-account">
+                        <div class="audit-account-icon" style="color: ${getCategoryColor(issue.category)}">${iconSvg}</div>
+                        <div>
+                            <div class="audit-account-name">${issue.name}</div>
+                            <div class="audit-account-user">${issue.username}</div>
+                        </div>
+                    </div>
+                    <div class="audit-issue">
+                        <span class="health-card-badge ${badgeClass}">${issue.label}</span>
+                    </div>
+                    <div class="audit-action">
+                        <button class="audit-action-btn ${actionClass}" data-edit-id="${issue.id}">${issue.action}</button>
+                    </div>
+                </div>
+            `;
+        }).join('');
+
+        // Action buttons → open edit modal
+        list.querySelectorAll('.audit-action-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const entry = passwords.find(p => p.id === btn.dataset.editId);
+                if (entry) {
+                    switchView('passwords');
+                    // Trigger edit
+                    setTimeout(() => {
+                        const editBtn = document.querySelector(`.password-card[data-id="${entry.id}"] .btn-edit`);
+                        if (editBtn) editBtn.click();
+                    }, 300);
+                }
+            });
+        });
+    }
 
     // ===== BACKUP (EXPORT & IMPORT) =====
     const backupOverlay = document.getElementById('backupOverlay');

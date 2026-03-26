@@ -1716,3 +1716,383 @@ body {
     border: 1px solid rgba(255, 107, 107, 0.3);
     color: #ff6b6b;
 }
+
+/* ===== VAULT HEALTH ===== */
+.health-hero {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+    padding: 32px;
+    background: var(--bg-container);
+    border-radius: var(--radius-lg);
+    margin-bottom: 20px;
+}
+
+.score-ring-wrapper {
+    position: relative;
+    width: 180px;
+    height: 180px;
+    flex-shrink: 0;
+}
+
+.score-ring {
+    width: 100%;
+    height: 100%;
+}
+
+.score-ring-bg {
+    stroke: var(--bg-container-highest);
+}
+
+.score-ring-fill {
+    stroke: #34d399;
+    filter: drop-shadow(0 0 8px rgba(52, 211, 153, 0.3));
+    transition: stroke-dashoffset 1.2s ease-out;
+}
+
+.score-value {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -55%);
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+}
+
+.score-number {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.score-percent {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+.score-label {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.score-summary {
+    flex: 1;
+}
+
+.score-status-label {
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    font-weight: 700;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.score-headline {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+    line-height: 1.3;
+}
+
+.score-description {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 20px;
+    line-height: 1.5;
+}
+
+/* Health Cards */
+.health-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.health-card {
+    background: var(--bg-container);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    position: relative;
+}
+
+.health-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.health-card.risk .health-card-icon {
+    background: rgba(129, 236, 255, 0.08);
+    color: var(--accent);
+}
+
+.health-card.warning .health-card-icon {
+    background: rgba(167, 139, 250, 0.08);
+    color: #a78bfa;
+}
+
+.health-card.critical .health-card-icon {
+    background: rgba(255, 107, 107, 0.08);
+    color: #ff6b6b;
+}
+
+.health-card-badge {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 3px 8px;
+    border-radius: 999px;
+}
+
+.badge-risk {
+    background: rgba(129, 236, 255, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(129, 236, 255, 0.2);
+}
+
+.badge-warning {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+    border: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.badge-critical {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+}
+
+.health-card-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 2px;
+}
+
+.health-card-label {
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}
+
+.health-card-desc {
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.5;
+}
+
+/* Audit Section */
+.audit-section {
+    background: var(--bg-container);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+}
+
+.audit-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+}
+
+.audit-header h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.audit-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    font-weight: 600;
+}
+
+.audit-filter select {
+    background: var(--bg-container-high);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text-primary);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 6px 12px;
+    cursor: pointer;
+    outline: none;
+}
+
+.audit-filter select:focus {
+    border-color: var(--accent);
+}
+
+.audit-table-head {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    padding: 10px 16px;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+}
+
+.audit-row {
+    display: grid;
+    grid-template-columns: 2fr 2fr 1fr;
+    align-items: center;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255,255,255,0.03);
+    transition: var(--transition);
+}
+
+.audit-row:hover {
+    background: var(--bg-container-high);
+}
+
+.audit-row:last-child {
+    border-bottom: none;
+}
+
+.audit-account {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.audit-account-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: var(--bg-container-high);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.audit-account-icon svg {
+    width: 16px;
+    height: 16px;
+}
+
+.audit-account-name {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.audit-account-user {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.audit-action-btn {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    padding: 6px 16px;
+    border-radius: var(--radius);
+    border: 1px solid;
+    cursor: pointer;
+    transition: var(--transition);
+    background: transparent;
+}
+
+.audit-btn-risk {
+    color: var(--accent);
+    border-color: rgba(129, 236, 255, 0.3);
+}
+
+.audit-btn-risk:hover {
+    background: rgba(129, 236, 255, 0.1);
+}
+
+.audit-btn-warning {
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+}
+
+.audit-btn-warning:hover {
+    background: rgba(251, 191, 36, 0.1);
+}
+
+.audit-btn-critical {
+    color: #ff6b6b;
+    border-color: rgba(255, 107, 107, 0.3);
+}
+
+.audit-btn-critical:hover {
+    background: rgba(255, 107, 107, 0.1);
+}
+
+.audit-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 40px 20px;
+    color: #34d399;
+    text-align: center;
+}
+
+.audit-empty p {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+    .health-hero {
+        flex-direction: column;
+        text-align: center;
+        gap: 20px;
+        padding: 24px;
+    }
+
+    .health-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .audit-table-head,
+    .audit-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .score-ring-wrapper {
+        width: 140px;
+        height: 140px;
+    }
+
+    .score-number {
+        font-size: 36px;
+    }
+}
