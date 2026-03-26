@@ -56,6 +56,11 @@
                         <span class="material-symbols-outlined">link</span>
                         <span>URL Bookmarks</span>
                     </a>
+                    <div class="nav-divider"></div>
+                    <a href="#" class="nav-item" id="btnBackup">
+                        <span class="material-symbols-outlined">cloud_sync</span>
+                        <span>สำรอง/กู้คืน</span>
+                    </a>
                 </nav>
             </div>
             <div class="sidebar-bottom">
@@ -384,6 +389,101 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <!-- Category Manager Modal -->
+    <div class="modal-overlay" id="catManagerOverlay">
+        <div class="modal modal-cat-manager">
+            <div class="modal-header">
+                <h2>จัดการหมวดหมู่</h2>
+                <button class="btn-close" id="btnCloseCatManager" title="ปิด">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="cat-manager-body">
+                <div class="cat-manager-section">
+                    <h3 class="cat-manager-section-title">หมวดหมู่ทั้งหมด</h3>
+                    <div id="catManagerList" class="cat-manager-list">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+                <div class="cat-manager-section">
+                    <h3 class="cat-manager-section-title">เพิ่ม / แก้ไขหมวดหมู่</h3>
+                    <div id="catAddForm" class="cat-add-form">
+                        <!-- Rendered by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Delete Confirmation Modal -->
+    <div class="modal-overlay" id="catDeleteOverlay">
+        <div class="modal modal-delete">
+            <div class="delete-icon" style="color: var(--danger)">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>
+            </div>
+            <h2>ลบหมวดหมู่นี้?</h2>
+            <p id="catDeleteName" style="color: var(--text-muted); margin-bottom: 6px;"></p>
+            <p style="font-size: 12px; color: var(--text-muted);">รหัสผ่านที่อยู่ในหมวดนี้จะถูกย้ายไป "อื่นๆ" อัตโนมัติ</p>
+            <div class="form-actions">
+                <button class="btn-cancel" id="btnCancelCatDelete">ยกเลิก</button>
+                <button class="btn-delete-confirm" id="btnConfirmCatDelete">ลบเลย</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backup Modal -->
+    <div class="modal-overlay" id="backupOverlay">
+        <div class="modal modal-backup">
+            <div class="modal-header">
+                <h2>สำรองและกู้คืนข้อมูล</h2>
+                <button class="btn-close" id="btnCloseBackup" title="ปิด">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="backup-body">
+                <!-- Export Section -->
+                <div class="backup-section">
+                    <div class="backup-card backup-export">
+                        <div class="backup-card-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                        </div>
+                        <div class="backup-card-info">
+                            <h3>ส่งออกข้อมูล (Export)</h3>
+                            <p>ดาวน์โหลดข้อมูลรหัสผ่าน, URL และหมวดหมู่ทั้งหมดเป็นไฟล์ .json สำหรับเก็บสำรองไว้</p>
+                        </div>
+                        <button class="btn-save" id="btnExport" style="width:100%">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                            ดาวน์โหลดไฟล์สำรอง
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Import Section -->
+                <div class="backup-section">
+                    <div class="backup-card backup-import">
+                        <div class="backup-card-icon import-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                        </div>
+                        <div class="backup-card-info">
+                            <h3>นำเข้าข้อมูล (Import)</h3>
+                            <p>เลือกไฟล์สำรอง .json ที่เคยดาวน์โหลดไว้ เพื่อกู้คืนข้อมูลกลับเข้ามา</p>
+                        </div>
+                        <div class="import-mode-selector">
+                            <label class="import-radio"><input type="radio" name="importMode" value="merge" checked> <span>รวมข้อมูล</span> <small>(เพิ่มเข้ากับข้อมูลปัจจุบัน)</small></label>
+                            <label class="import-radio"><input type="radio" name="importMode" value="replace"> <span>แทนที่ทั้งหมด</span> <small>(ลบข้อมูลเดิมทิ้ง)</small></label>
+                        </div>
+                        <label class="btn-import-file" for="importFileInput">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/></svg>
+                            เลือกไฟล์สำรอง (.json)
+                        </label>
+                        <input type="file" id="importFileInput" accept=".json" hidden>
+                        <div id="importStatus" class="import-status"></div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

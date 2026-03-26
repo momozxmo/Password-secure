@@ -19,8 +19,9 @@ All of your data is obfuscated and **stored exclusively in your browser's LocalS
 - **3D Background**: Futuristic space/cyber background with floating interactive particles rendered via **Three.js**.
 - **Password Generator**: One-click generation of strong, international-standard 16-character passwords (including A-Z, a-z, 0-9, and special symbols).
 - **Strength Indicator**: Real-time visual feedback representing password strength levels.
-- **Categorization**: Systematically separate your passwords into custom categories such as PlayID, Team, and others.
-- **Security (Local First)**: Data is safely stored strictly on your device via `localStorage`, integrated with Base64 encoding (Obfuscation).
+- **Custom Categories**: Systematically separate your passwords into custom categories. Create, edit, and delete your own categories with a personalized icon and color picker.
+- **Import / Export Backup**: Download a `.json` backup of your passwords, URLs, and custom categories, and easily import them back across devices (with merge or replace modes).
+- **Security (Local First)**: Data is safely stored strictly on your device via `localStorage`.
 
 ---
 

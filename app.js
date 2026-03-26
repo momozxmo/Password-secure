@@ -5,19 +5,88 @@
 
     // ===== Constants =====
     const STORAGE_KEY = 'aegis_vault_passwords';
+    const CATEGORY_STORAGE_KEY = 'aegis_vault_categories';
 
-    // SVG icons for each category
-    const CATEGORY_SVG = {
-        playid: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
-        team: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
-        other: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>'
+    // ===== Preset Icons (SVG) =====
+    const ICON_PRESETS = {
+        monitor: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>',
+        users: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>',
+        folder: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>',
+        gamepad: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="6" y1="12" x2="10" y2="12"/><line x1="8" y1="10" x2="8" y2="14"/><line x1="15" y1="13" x2="15.01" y2="13"/><line x1="18" y1="11" x2="18.01" y2="11"/><path d="M17.32 5H6.68a4 4 0 0 0-3.978 3.59c-.006.052-.01.101-.017.152C2.604 9.416 2 14.456 2 16a3 3 0 0 0 3 3c1 0 1.5-.5 2-1l1.414-1.414A2 2 0 0 1 9.828 16h4.344a2 2 0 0 1 1.414.586L17 18c.5.5 1 1 2 1a3 3 0 0 0 3-3c0-1.545-.604-6.584-.685-7.258-.007-.05-.011-.1-.017-.151A4 4 0 0 0 17.32 5z"/></svg>',
+        mail: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>',
+        'credit-card': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>',
+        'shopping-bag': '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
+        briefcase: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>',
+        globe: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+        lock: '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>'
     };
 
-    const CATEGORY_LABELS = {
-        playid: 'PlayID',
-        team: 'Team',
-        other: 'อื่นๆ'
+    const ICON_LABELS = {
+        monitor: 'จอ', users: 'ทีม', folder: 'โฟลเดอร์', gamepad: 'เกม',
+        mail: 'อีเมล', 'credit-card': 'การเงิน', 'shopping-bag': 'ช้อปปิ้ง',
+        briefcase: 'งาน', globe: 'เว็บ', lock: 'ความปลอดภัย'
     };
+
+    const COLOR_PRESETS = [
+        '#81ecff', '#a78bfa', '#ff6b6b', '#fbbf24',
+        '#34d399', '#f472b6', '#60a5fa', '#fb923c'
+    ];
+
+    // ===== Default categories (built-in, cannot be deleted) =====
+    const DEFAULT_CATEGORIES = [
+        { id: 'playid', label: 'PlayID', icon: 'monitor', color: '#81ecff', isDefault: true },
+        { id: 'team', label: 'Team', icon: 'users', color: '#a78bfa', isDefault: true },
+        { id: 'other', label: 'อื่นๆ', icon: 'folder', color: '#fb923c', isDefault: true }
+    ];
+
+    // ===== Custom Category System =====
+    let customCategories = [];
+
+    function loadCategories() {
+        try {
+            const data = localStorage.getItem(CATEGORY_STORAGE_KEY);
+            customCategories = data ? JSON.parse(data) : [];
+        } catch { customCategories = []; }
+    }
+
+    function saveCategories() {
+        localStorage.setItem(CATEGORY_STORAGE_KEY, JSON.stringify(customCategories));
+    }
+
+    function getAllCategories() {
+        return [...DEFAULT_CATEGORIES, ...customCategories];
+    }
+
+    function getCategoryById(catId) {
+        return getAllCategories().find(c => c.id === catId) || DEFAULT_CATEGORIES[2]; // fallback to "other"
+    }
+
+    function getCategoryIcon(catId) {
+        const cat = getCategoryById(catId);
+        return ICON_PRESETS[cat.icon] || ICON_PRESETS.folder;
+    }
+
+    function getCategoryLabel(catId) {
+        const cat = getCategoryById(catId);
+        return cat.label;
+    }
+
+    function getCategoryColor(catId) {
+        const cat = getCategoryById(catId);
+        return cat.color || '#fb923c';
+    }
+
+    // Legacy compat — these are still used by render/createCard
+    function get_CATEGORY_SVG() {
+        const obj = {};
+        getAllCategories().forEach(c => { obj[c.id] = ICON_PRESETS[c.icon] || ICON_PRESETS.folder; });
+        return obj;
+    }
+    function get_CATEGORY_LABELS() {
+        const obj = {};
+        getAllCategories().forEach(c => { obj[c.id] = c.label; });
+        return obj;
+    }
 
     // ===== DOM Elements =====
     const $ = id => document.getElementById(id);
@@ -152,7 +221,7 @@
             // Text search
             if (!query) return true;
             return p.name.toLowerCase().includes(query)
-                || (CATEGORY_LABELS[p.category] || '').toLowerCase().includes(query)
+                || getCategoryLabel(p.category).toLowerCase().includes(query)
                 || decode(p.username).toLowerCase().includes(query);
         });
 
@@ -219,8 +288,8 @@
     }
 
     function createCard(entry) {
-        const catLabel = CATEGORY_LABELS[entry.category] || CATEGORY_LABELS.other;
-        const catSVG = CATEGORY_SVG[entry.category] || CATEGORY_SVG.other;
+        const catLabel = getCategoryLabel(entry.category);
+        const catSVG = getCategoryIcon(entry.category);
         const card = document.createElement('div');
         card.className = 'password-card';
 
@@ -229,7 +298,7 @@
         card.innerHTML = `
             <div class="card-top">
                 <div class="card-info">
-                    <div class="card-icon ${entry.category}">
+                    <div class="card-icon" style="color: ${getCategoryColor(entry.category)}">
                         ${catSVG}
                     </div>
                     <div>
@@ -266,7 +335,11 @@
                 </div>
                 <div class="credential-row">
                     <span class="credential-label">Pass</span>
-                    <span class="credential-value masked">${maskedPw}</span>
+                    <span class="credential-value masked" data-real-pw="${escapeAttr(decode(entry.password))}" data-masked="${maskedPw}">${maskedPw}</span>
+                    <button class="btn-icon toggle-pw-card" title="แสดง/ซ่อนรหัสผ่าน">
+                        <svg class="eye-show" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+                        <svg class="eye-hide" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+                    </button>
                     <button class="btn-copy" data-copy="${escapeAttr(decode(entry.password))}" title="คัดลอก Password">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
@@ -538,6 +611,28 @@
             return;
         }
 
+        const toggleBtn = e.target.closest('.toggle-pw-card');
+        if (toggleBtn) {
+            const valSpan = toggleBtn.parentElement.querySelector('.credential-value');
+            const showIcon = toggleBtn.querySelector('.eye-show');
+            const hideIcon = toggleBtn.querySelector('.eye-hide');
+            
+            if (valSpan.classList.contains('masked')) {
+                // Show real password
+                valSpan.textContent = valSpan.dataset.realPw;
+                valSpan.classList.remove('masked');
+                showIcon.style.display = 'none';
+                hideIcon.style.display = 'block';
+            } else {
+                // Hide password
+                valSpan.textContent = valSpan.dataset.masked;
+                valSpan.classList.add('masked');
+                showIcon.style.display = 'block';
+                hideIcon.style.display = 'none';
+            }
+            return;
+        }
+
         const editBtn = e.target.closest('.btn-icon.edit');
         if (editBtn) {
             const entry = passwords.find(p => p.id === editBtn.dataset.id);
@@ -630,7 +725,7 @@
         if (query) {
             filteredPw = passwords.filter(p =>
                 p.name.toLowerCase().includes(query)
-                || (CATEGORY_LABELS[p.category] || '').toLowerCase().includes(query)
+                || getCategoryLabel(p.category).toLowerCase().includes(query)
                 || decode(p.username).toLowerCase().includes(query)
             );
         }
@@ -638,14 +733,14 @@
         dashPasswordGrid.innerHTML = '';
         recentPw.forEach(entry => {
             const cat = entry.category || 'other';
-            const label = CATEGORY_LABELS[cat] || CATEGORY_LABELS.other;
-            const icon = CATEGORY_SVG[cat] || CATEGORY_SVG.other;
+            const label = getCategoryLabel(cat);
+            const icon = getCategoryIcon(cat);
             const card = document.createElement('div');
             card.className = 'password-card reveal';
             card.innerHTML = `
                 <div class="card-top">
                     <div class="card-info">
-                        <div class="card-icon ${cat}">${icon}</div>
+                        <div class="card-icon" style="color: ${getCategoryColor(cat)}">${icon}</div>
                         <div style="min-width:0">
                             <div class="card-title">${entry.name}</div>
                             <div class="card-category">${decode(entry.username)}</div>
@@ -1020,10 +1115,390 @@
         }
     });
 
+    // ===== DYNAMIC FILTER BAR =====
+    function renderFilterBar() {
+        const filterBar = document.getElementById('filterBar');
+        if (!filterBar) return;
+
+        const cats = getAllCategories();
+        filterBar.innerHTML = `
+            <span class="filter-bar-label">กรอง:</span>
+            <button class="filter-btn ${activeFilter === 'all' ? 'active' : ''}" data-filter="all">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+                ทั้งหมด
+                <span class="filter-count" id="filterCountAll">${passwords.length}</span>
+            </button>
+            ${cats.map(c => `
+                <button class="filter-btn ${activeFilter === c.id ? 'active' : ''}" data-filter="${c.id}" style="--cat-color: ${c.color}">
+                    ${ICON_PRESETS[c.icon] ? ICON_PRESETS[c.icon].replace('width="20"', 'width="13"').replace('height="20"', 'height="13"') : ''}
+                    ${c.label}
+                </button>
+            `).join('')}
+            <button class="filter-btn btn-manage-cats" id="btnManageCats" title="จัดการหมวดหมู่">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            </button>
+        `;
+    }
+
+    // ===== DYNAMIC MODAL CATEGORY SELECTOR =====
+    function renderCategorySelector() {
+        if (!categorySelector) return;
+        const cats = getAllCategories();
+        categorySelector.innerHTML = cats.map(c => `
+            <button type="button" class="cat-btn ${selectedCategory === c.id ? 'active' : ''}" data-cat="${c.id}" style="--cat-color: ${c.color}">
+                ${ICON_PRESETS[c.icon] ? ICON_PRESETS[c.icon].replace('width="20"', 'width="14"').replace('height="20"', 'height="14"') : ''}
+                ${c.label}
+            </button>
+        `).join('');
+    }
+
+    // ===== CATEGORY MANAGER MODAL =====
+    const catManagerOverlay = document.getElementById('catManagerOverlay');
+
+    function openCatManager() {
+        renderCatManagerList();
+        catManagerOverlay.classList.add('active');
+    }
+
+    function closeCatManager() {
+        catManagerOverlay.classList.remove('active');
+    }
+
+    function renderCatManagerList() {
+        const listEl = document.getElementById('catManagerList');
+        if (!listEl) return;
+
+        const cats = getAllCategories();
+        listEl.innerHTML = cats.map(c => `
+            <div class="cat-manager-item" data-cat-id="${c.id}">
+                <div class="cat-manager-icon" style="color: ${c.color}">${ICON_PRESETS[c.icon] || ICON_PRESETS.folder}</div>
+                <span class="cat-manager-label">${c.label}</span>
+                <div class="cat-manager-color" style="background: ${c.color}"></div>
+                ${c.isDefault ? '<span class="cat-manager-badge">ค่าเริ่มต้น</span>' : `
+                    <button class="btn-icon cat-edit-btn" data-edit-cat="${c.id}" title="แก้ไข">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                    </button>
+                    <button class="btn-icon delete cat-delete-btn" data-delete-cat="${c.id}" title="ลบ">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                    </button>
+                `}
+            </div>
+        `).join('');
+    }
+
+    function renderIconPicker(selectedIcon = 'folder') {
+        return Object.keys(ICON_PRESETS).map(key =>
+            `<button type="button" class="icon-pick-btn ${key === selectedIcon ? 'active' : ''}" data-icon="${key}" title="${ICON_LABELS[key] || key}">
+                ${ICON_PRESETS[key]}
+            </button>`
+        ).join('');
+    }
+
+    function renderColorPicker(selectedColor = '#fb923c') {
+        return COLOR_PRESETS.map(c =>
+            `<button type="button" class="color-pick-btn ${c === selectedColor ? 'active' : ''}" data-color="${c}" style="background: ${c}"></button>`
+        ).join('');
+    }
+
+    function renderAddCategoryForm(editCat = null) {
+        const formEl = document.getElementById('catAddForm');
+        if (!formEl) return;
+
+        const label = editCat ? editCat.label : '';
+        const icon = editCat ? editCat.icon : 'folder';
+        const color = editCat ? editCat.color : '#81ecff';
+
+        formEl.innerHTML = `
+            <input type="hidden" id="catFormEditId" value="${editCat ? editCat.id : ''}">
+            <div class="form-group">
+                <label>ชื่อหมวดหมู่</label>
+                <input type="text" id="catFormName" placeholder="เช่น Gaming, Social..." value="${label}" required>
+            </div>
+            <div class="form-group">
+                <label>เลือกไอคอน</label>
+                <div class="icon-picker" id="iconPicker">${renderIconPicker(icon)}</div>
+                <input type="hidden" id="catFormIcon" value="${icon}">
+            </div>
+            <div class="form-group">
+                <label>เลือกสี</label>
+                <div class="color-picker" id="colorPicker">${renderColorPicker(color)}</div>
+                <input type="hidden" id="catFormColor" value="${color}">
+            </div>
+            <button type="button" class="btn-save" id="btnSaveCat" style="width:100%;margin-top:8px">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                ${editCat ? 'อัปเดต' : 'เพิ่มหมวดหมู่'}
+            </button>
+        `;
+
+        // Icon picker events
+        formEl.querySelector('#iconPicker').addEventListener('click', e => {
+            const btn = e.target.closest('.icon-pick-btn');
+            if (!btn) return;
+            formEl.querySelectorAll('.icon-pick-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            formEl.querySelector('#catFormIcon').value = btn.dataset.icon;
+        });
+
+        // Color picker events
+        formEl.querySelector('#colorPicker').addEventListener('click', e => {
+            const btn = e.target.closest('.color-pick-btn');
+            if (!btn) return;
+            formEl.querySelectorAll('.color-pick-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            formEl.querySelector('#catFormColor').value = btn.dataset.color;
+        });
+
+        // Save
+        formEl.querySelector('#btnSaveCat').addEventListener('click', () => {
+            const name = formEl.querySelector('#catFormName').value.trim();
+            const iconVal = formEl.querySelector('#catFormIcon').value;
+            const colorVal = formEl.querySelector('#catFormColor').value;
+            const editId = formEl.querySelector('#catFormEditId').value;
+
+            if (!name) { showToast('กรุณาใส่ชื่อหมวดหมู่'); return; }
+
+            if (editId) {
+                // Edit existing
+                const idx = customCategories.findIndex(c => c.id === editId);
+                if (idx !== -1) {
+                    customCategories[idx].label = name;
+                    customCategories[idx].icon = iconVal;
+                    customCategories[idx].color = colorVal;
+                }
+            } else {
+                // Add new
+                const newCat = {
+                    id: 'cat_' + Date.now(),
+                    label: name,
+                    icon: iconVal,
+                    color: colorVal,
+                    isDefault: false
+                };
+                customCategories.push(newCat);
+            }
+
+            saveCategories();
+            renderCatManagerList();
+            renderAddCategoryForm(); // Reset form
+            renderFilterBar();
+            renderCategorySelector();
+            render(searchInput.value);
+            renderDashboard(searchInput.value);
+            showToast(editId ? 'แก้ไขหมวดหมู่แล้ว' : 'เพิ่มหมวดหมู่ใหม่แล้ว');
+            closeCatManager();
+        });
+    }
+
+    // ===== Cat Manager event delegation =====
+    if (catManagerOverlay) {
+        catManagerOverlay.addEventListener('click', e => {
+            if (e.target === catManagerOverlay) closeCatManager();
+
+            // Close button
+            if (e.target.closest('#btnCloseCatManager')) closeCatManager();
+
+            // Edit
+            const editBtn = e.target.closest('.cat-edit-btn');
+            if (editBtn) {
+                const catId = editBtn.dataset.editCat;
+                const cat = customCategories.find(c => c.id === catId);
+                if (cat) renderAddCategoryForm(cat);
+            }
+
+            // Delete — open styled confirm modal
+            const deleteBtn = e.target.closest('.cat-delete-btn');
+            if (deleteBtn) {
+                const catId = deleteBtn.dataset.deleteCat;
+                const cat = customCategories.find(c => c.id === catId);
+                catDeleteTargetId = catId;
+                document.getElementById('catDeleteName').textContent = `ลบ "${cat ? cat.label : ''}" ใช่หรือไม่?`;
+                document.getElementById('catDeleteOverlay').classList.add('active');
+            }
+        });
+    }
+
+    // Category delete confirmation modal handlers
+    let catDeleteTargetId = null;
+    const catDeleteOverlay = document.getElementById('catDeleteOverlay');
+
+    if (catDeleteOverlay) {
+        document.getElementById('btnCancelCatDelete').addEventListener('click', () => {
+            catDeleteOverlay.classList.remove('active');
+            catDeleteTargetId = null;
+        });
+
+        catDeleteOverlay.addEventListener('click', e => {
+            if (e.target === catDeleteOverlay) {
+                catDeleteOverlay.classList.remove('active');
+                catDeleteTargetId = null;
+            }
+        });
+
+        document.getElementById('btnConfirmCatDelete').addEventListener('click', () => {
+            if (!catDeleteTargetId) return;
+
+            // Move passwords with this category → "other"
+            passwords.forEach(p => {
+                if (p.category === catDeleteTargetId) p.category = 'other';
+            });
+            savePasswords();
+
+            customCategories = customCategories.filter(c => c.id !== catDeleteTargetId);
+            saveCategories();
+            renderCatManagerList();
+            renderFilterBar();
+            renderCategorySelector();
+            render(searchInput.value);
+            renderDashboard(searchInput.value);
+            showToast('ลบหมวดหมู่แล้ว');
+
+            catDeleteOverlay.classList.remove('active');
+            catDeleteTargetId = null;
+        });
+    }
+
+    // Open category manager from filter bar
+    document.addEventListener('click', e => {
+        if (e.target.closest('#btnManageCats')) {
+            openCatManager();
+            renderAddCategoryForm();
+        }
+    });
+
+    // ===== BACKUP (EXPORT & IMPORT) =====
+    const backupOverlay = document.getElementById('backupOverlay');
+
+    function openBackup() {
+        const statusEl = document.getElementById('importStatus');
+        if (statusEl) { statusEl.className = 'import-status'; statusEl.textContent = ''; }
+        backupOverlay.classList.add('active');
+    }
+
+    function closeBackup() {
+        backupOverlay.classList.remove('active');
+    }
+
+    // Sidebar backup button
+    const btnBackup = document.getElementById('btnBackup');
+    if (btnBackup) {
+        btnBackup.addEventListener('click', e => {
+            e.preventDefault();
+            openBackup();
+        });
+    }
+
+    if (backupOverlay) {
+        document.getElementById('btnCloseBackup').addEventListener('click', closeBackup);
+        backupOverlay.addEventListener('click', e => { if (e.target === backupOverlay) closeBackup(); });
+    }
+
+    // --- EXPORT ---
+    const btnExport = document.getElementById('btnExport');
+    if (btnExport) {
+        btnExport.addEventListener('click', () => {
+            const backupData = {
+                _meta: {
+                    app: 'AEGIS Vault',
+                    version: '1.0',
+                    exportedAt: new Date().toISOString(),
+                    passwordCount: passwords.length,
+                    urlCount: urlEntries.length,
+                    categoryCount: customCategories.length
+                },
+                passwords: passwords,
+                urls: urlEntries,
+                categories: customCategories
+            };
+
+            const blob = new Blob([JSON.stringify(backupData, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            const date = new Date().toISOString().slice(0, 10);
+            a.href = url;
+            a.download = `aegis-vault-backup-${date}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+
+            showToast(`ส่งออกสำเร็จ — ${passwords.length} รหัสผ่าน, ${urlEntries.length} URLs`);
+        });
+    }
+
+    // --- IMPORT ---
+    const importFileInput = document.getElementById('importFileInput');
+    if (importFileInput) {
+        importFileInput.addEventListener('change', e => {
+            const file = e.target.files[0];
+            if (!file) return;
+            const statusEl = document.getElementById('importStatus');
+
+            const reader = new FileReader();
+            reader.onload = event => {
+                try {
+                    const data = JSON.parse(event.target.result);
+
+                    // Validate
+                    if (!data._meta || !data._meta.app || data._meta.app !== 'AEGIS Vault') {
+                        statusEl.className = 'import-status error';
+                        statusEl.textContent = '❌ ไฟล์ไม่ถูกต้อง — ไม่ใช่ไฟล์สำรองของ AEGIS Vault';
+                        return;
+                    }
+
+                    const mode = document.querySelector('input[name="importMode"]:checked').value;
+                    const importedPw = Array.isArray(data.passwords) ? data.passwords : [];
+                    const importedUrls = Array.isArray(data.urls) ? data.urls : [];
+                    const importedCats = Array.isArray(data.categories) ? data.categories : [];
+
+                    if (mode === 'replace') {
+                        passwords = importedPw;
+                        urlEntries = importedUrls;
+                        customCategories = importedCats;
+                    } else {
+                        // Merge — add only items with new IDs
+                        const existingPwIds = new Set(passwords.map(p => p.id));
+                        const existingUrlIds = new Set(urlEntries.map(u => u.id));
+                        const existingCatIds = new Set(customCategories.map(c => c.id));
+
+                        importedPw.forEach(p => { if (!existingPwIds.has(p.id)) passwords.push(p); });
+                        importedUrls.forEach(u => { if (!existingUrlIds.has(u.id)) urlEntries.push(u); });
+                        importedCats.forEach(c => { if (!existingCatIds.has(c.id)) customCategories.push(c); });
+                    }
+
+                    savePasswords();
+                    saveUrls();
+                    saveCategories();
+                    renderFilterBar();
+                    renderCategorySelector();
+                    render(searchInput.value);
+                    renderUrls(searchInput.value);
+                    renderDashboard(searchInput.value);
+
+                    const summary = `✅ นำเข้าสำเร็จ (${mode === 'replace' ? 'แทนที่' : 'รวม'}) — ${importedPw.length} รหัสผ่าน, ${importedUrls.length} URLs, ${importedCats.length} หมวดหมู่`;
+                    statusEl.className = 'import-status success';
+                    statusEl.textContent = summary;
+                    showToast('นำเข้าข้อมูลสำเร็จ!');
+                } catch (err) {
+                    statusEl.className = 'import-status error';
+                    statusEl.textContent = '❌ ไม่สามารถอ่านไฟล์ได้ — รูปแบบ JSON ไม่ถูกต้อง';
+                }
+            };
+            reader.readAsText(file);
+            importFileInput.value = ''; // Reset for re-upload
+        });
+    }
+
     // Keyboard shortcuts
     document.addEventListener('keydown', e => {
         if (e.key === 'Escape') {
-            if (deleteModalOverlay.classList.contains('active')) {
+            if (backupOverlay && backupOverlay.classList.contains('active')) {
+                closeBackup();
+            } else if (catDeleteOverlay && catDeleteOverlay.classList.contains('active')) {
+                catDeleteOverlay.classList.remove('active');
+                catDeleteTargetId = null;
+            } else if (catManagerOverlay && catManagerOverlay.classList.contains('active')) {
+                closeCatManager();
+            } else if (deleteModalOverlay.classList.contains('active')) {
                 closeDeleteModal();
             } else if (urlModalOverlay.classList.contains('active')) {
                 closeUrlModal();
@@ -1039,8 +1514,11 @@
     });
 
     // ===== Init =====
+    loadCategories();
     loadPasswords();
     loadUrls();
+    renderFilterBar();
+    renderCategorySelector();
     render();
     renderUrls();
     renderDashboard();
